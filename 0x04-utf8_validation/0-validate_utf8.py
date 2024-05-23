@@ -6,6 +6,7 @@ This module contains a function to validate if a given data set
 is encoded in valid UTF-8.
 """
 
+
 def validUTF8(data) -> bool:
     """
     Checks if the given data set is a valid UTF-8 encoding.
