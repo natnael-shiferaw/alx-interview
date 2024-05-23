@@ -18,18 +18,18 @@ def validUTF8(data) -> bool:
 
     for byte in data:
         mask = 1 << 7
-        
+
         if num_bytes == 0:
             # Count the number of leading 1's
             # to determine the number of bytes in the character
             while byte & mask:
                 num_bytes += 1
                 mask >>= 1
-            
+
             # If no leading 1's, it's a single-byte character (0xxxxxxx)
             if num_bytes == 0:
                 continue
-            
+
             # UTF-8 encoding can only be 1 to 4 bytes long
             if num_bytes == 1 or num_bytes > 4:
                 return False
