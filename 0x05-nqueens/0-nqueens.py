@@ -1,110 +1,73 @@
 #!/usr/bin/python3
-"""
-N-Queens Problem Solver
-"""
-
+""" N QUEENS ALGORITHM WITH BACKTRACKING (RECURSION INSIDE LOOP) """
 import sys
 
 
-def print_usage_and_exit():
-    """Prints usage information and exits with status 1."""
-    print('Usage: nqueens N')
-    exit(1)
+class NQueen:
+    """ Class for solving N Queen Problem """
+
+    def __init__(self, n):
+        """ Global Variables """
+        self.n = n
+        self.x = [0 for i in range(n + 1)]
+        self.res = []
+
+    def place(self, k, i):
+        """ Checks if k Queen can be placed in i column (True)
+        or if the are attacking queens in row or diagonal (False)
+        """
+
+        # j checks from 1 to k - 1 (Up to previous queen)
+        for j in range(1, k):
+            # There is already a queen in column
+            # or a queen in same diagonal
+            if self.x[j] == i or \
+               abs(self.x[j] - i) == abs(j - k):
+                return 0
+        return 1
+
+    def nQueen(self, k):
+        """ Tries to place every queen in the board
+        Args:
+        k: starting queen from which to evaluate (should be 1)
+        """
+        # i goes from column 1 to column n (1st column is 1st index)
+        for i in range(1, self.n + 1):
+            if self.place(k, i):
+                # Queen can be placed in i column
+                self.x[k] = i
+                if k == self.n:
+                    # Placed all 4 Queens (A solution was found)
+                    solution = []
+                    for i in range(1, self.n + 1):
+                        solution.append([i - 1, self.x[i] - 1])
+                    self.res.append(solution)
+                else:
+                    # Need to place more Queens
+                    self.nQueen(k + 1)
+        return self.res
 
 
-def validate_and_get_n():
-    """
-    Validates the input and returns the integer N.
+# Main
 
-    Returns:
-        int: The number of queens and the size of the board (n x n).
-    """
-    if len(sys.argv) != 2:
-        print_usage_and_exit()
+if len(sys.argv) != 2:
+    print("Usage: nqueens N")
+    sys.exit(1)
 
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print('N must be a number')
-        exit(1)
+N = sys.argv[1]
 
-    if n < 4:
-        print('N must be at least 4')
-        exit(1)
+try:
+    N = int(N)
+except ValueError:
+    print("N must be a number")
+    sys.exit(1)
 
-    return n
+if N < 4:
+    print("N must be at least 4")
+    sys.exit(1)
 
+queen = NQueen(N)
+res = queen.nQueen(1)
 
-def solve_nqueens(n):
-    """
-    Solve the N-Queens problem using backtracking.
-
-    Args:
-        n (int): The number of queens and the size of the board (n x n).
-
-    Returns:
-        list: A list of solutions, where each solution is a list of tuples
-              representing the positions of queens on the board.
-    """
-    if n == 0:
-        return [[]]
-    inner_solution = solve_nqueens(n - 1)
-    return [solution + [(n, i + 1)]
-            for i in range(n_q)
-            for solution in inner_solution
-            if safe_queen((n, i + 1), solution)]
-
-
-def attack_queen(square, queen):
-    """
-    Determine if two queens attack each other.
-
-    Args:
-        square (tuple): The position of the first queen (row, column).
-        queen (tuple): The position of the second queen (row, column).
-
-    Returns:
-        bool: True if the queens attack each other, False otherwise.
-    """
-    (row1, col1) = square
-    (row2, col2) = queen
-    return (row1 == row2) or (col1 == col2) or
-            abs(row1 - row2) == abs(col1 - col2)
-
-
-def safe_queen(sqr, queens):
-    """
-    Check if a queen can be safely placed at a given position.
-
-    Args:
-        sqr (tuple): The position to check (row, column).
-        queens (list): A list of positions of queens already
-                       placed on the board.
-
-    Returns:
-        bool: True if the position is safe, False otherwise.
-    """
-    for queen in queens:
-        if attack_queen(sqr, queen):
-            return False
-    return True
-
-
-def format_solution(solution):
-    """
-    Format the solution by converting 1-based positions to 0-based.
-
-    Args:
-        solution (list): A list of tuples representing the
-                         positions of queens.
-
-    Returns:
-        list: A formatted list with 0-based positions.
-    """
-    return [[i - 1 for i in p] for p in solution]
-
-if __name__ == '__main__':
-    n_q = validate_and_get_n()
-    for answer in reversed(solve_nqueens(n_q)):
-        print(format_solution(answer))
-
+for i in res:
+    print(i)
