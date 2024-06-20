@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """
-Module for calculating the minimum number of coins
-needed to make change.
+Module for calculating the minimum number of coins needed to make change.
 """
 
 
@@ -15,12 +14,13 @@ def makeChange(coins, total):
 
     Returns:
         int: The minimum number of coins needed to make the change,
-        or -1 if it is not possible.
+             or -1 if it is not possible.
     """
     if total <= 0:
         return 0
 
-    # Initialize the dp array with 'inf' and set dp[0] to 0
+    # Initialize the dp array with 'inf' for all values from 1 to total
+    # and 0 for the 0 value
     dp = [0] + [float("inf")] * total
 
     # Iterate through each coin
@@ -31,4 +31,4 @@ def makeChange(coins, total):
 
     # Return the result for the total or -1 if it's not possible
     # to make the total
-    return dp[-1] if dp[-1] != float("inf") else -1
+    return dp[total] if dp[total] != float("inf") else -1
