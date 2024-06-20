@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-Module for calculating the minimum number of coins needed to make change.
+Module for calculating the minimum number of coins
+needed to make change.
 """
 
 
