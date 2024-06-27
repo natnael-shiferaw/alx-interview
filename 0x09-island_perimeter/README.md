@@ -64,7 +64,7 @@ guillaume@ubuntu:~/0x09$
 
 ```
 
-** Repo:**
+**Repo:**
 
 -	GitHub repository: `alx-interview`
 -	Directory: `0x09-islalnd_perimeter`
