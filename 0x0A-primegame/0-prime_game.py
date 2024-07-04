@@ -3,11 +3,13 @@
 Prime Game
 """
 
+
 def find_multiples(num, targets):
     """
     Finds and removes multiples of a given number within a list
     """
     return [i for i in targets if i % num != 0]
+
 
 def is_prime(i):
     """
@@ -20,6 +22,7 @@ def is_prime(i):
             return False
     return True
 
+
 def find_primes(n):
     """
     Dispatch a given set into prime numbers and non-prime numbers.
@@ -29,6 +32,7 @@ def find_primes(n):
         if is_prime(i):
             primes.append(i)
     return primes
+
 
 def is_winner(x, nums):
     """
