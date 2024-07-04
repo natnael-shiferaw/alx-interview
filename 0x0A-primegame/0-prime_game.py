@@ -3,89 +3,59 @@
 Prime Game
 """
 
-
 def find_multiples(num, targets):
     """
-    Find multiples of a given number within a list and remove them.
-
-    Parameters:
-    num (int): The number to find multiples of.
-    targets (list of int): The list of numbers to search within.
-
-    Returns:
-    list of int: The list with multiples of num removed.
+    Finds and removes multiples of a given number within a list
     """
-    targets = [i for i in targets if i % num != 0]
-    return targets
+    return [i for i in targets if i % num != 0]
 
-
-def is_prime(n):
+def is_prime(i):
     """
     Check if a number is prime.
-
-    Parameters:
-    n (int): The number to check.
-
-    Returns:
-    bool: True if n is prime, False otherwise.
     """
-    if n <= 1:
+    if i <= 1:
         return False
-    for i in range(2, int(n**0.5) + 1):
-        if n % i == 0:
+    for j in range(2, int(i**0.5) + 1):
+        if i % j == 0:
             return False
     return True
 
-
 def find_primes(n):
     """
-    Count prime numbers and remove them along with their
-    multiples from a set.
-
-    Parameters:
-    n (set of int): The set of numbers to process.
-
-    Returns:
-    int: The count of prime numbers found.
+    Dispatch a given set into prime numbers and non-prime numbers.
     """
-    counter = 0
-    target = list(n)
-    for i in range(1, len(target) + 1):
+    primes = []
+    for i in range(2, n + 1):
         if is_prime(i):
-            counter += 1
-            target.remove(i)
-            target = find_multiples(i, target)
-    return counter
-
+            primes.append(i)
+    return primes
 
 def is_winner(x, nums):
     """
-    Determine the winner after x rounds of the prime game.
+    Determine the winner of the prime game after x rounds.
 
-    Maria and Ben are playing a game. Given a set of consecutive
-    integers starting from 1 up to and including n, they take turns
-    choosing a prime number from the set and removing that number
-    and its multiples from the set. The player that cannot make a
-    move loses the game.
-
-    They play x rounds of the game, where n may be different for
-    each round. Assuming Maria always goes first and both players
-    play optimally, determine who the winner of each game is.
-
-    Parameters:
-    x (int): The number of rounds to play.
-    nums (list of int): The list of n values for each round.
+    Args:
+        x (int): number of rounds
+        nums (list): list of n values for each round
 
     Returns:
-    str or None: The winner ("Maria" or "Ben") or None if it's a draw.
+        str: name of the player that won the most rounds or None if it's a tie
     """
+    if x <= 0 or not nums:
+        return None
+
     players = {'Maria': 0, 'Ben': 0}
 
-    for num in nums[:x]:
-        cluster = set(range(1, num + 1))
-        prime_count = find_primes(cluster)
+    for num in nums:
+        primes = find_primes(num)
+        turn = 0  # Maria starts first
 
-        if prime_count % 2 == 0:
+        while primes:
+            prime = primes.pop(0)
+            primes = find_multiples(prime, primes)
+            turn = 1 - turn  # Switch turns
+
+        if turn == 0:  # If turn is 0, Ben made the last move and won
             players['Ben'] += 1
         else:
             players['Maria'] += 1
